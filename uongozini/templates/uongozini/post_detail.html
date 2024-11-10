@@ -1,0 +1,31 @@
+{% extends 'uongozini/base.html' %}
+
+{% block title %}Post Detail{% endblock %}
+
+{% block sidebar %}{% endblock %}  <!-- This will remove the sidebar -->
+
+{% block content %}
+<div class="container">
+    <h2>Post Detail</h2>
+    <div>
+        <img src="{{ post.image.url }}" alt="Post Image" class="img-fluid">
+        <p>{{ post.description }}</p>
+        <p>County: {{ post.county }}</p>
+        <p>Posted by {{ post.user.username }} on {{ post.created_at }}</p>
+        <p>{{ likes }} likes</p>
+        <a href="{% url 'like_post' post.id %}">Like</a>
+    </div>
+    <h4>Comments:</h4>
+    <div>
+        {% for comment in comments %}
+            <p><strong>{{ comment.user.username }}:</strong> {{ comment.text }}</p>
+        {% endfor %}
+    </div>
+    <form method="post" action="{% url 'add_comment' post.id %}">
+        {% csrf_token %}
+        <textarea name="text" placeholder="Add a comment" required></textarea>
+        <button type="submit" class="btn btn-primary">Comment</button>
+    </form>
+    <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>
+</div>
+{% endblock %}

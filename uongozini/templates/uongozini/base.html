@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #e0f7fa; /* Light cyan color for background */
+            padding-top: 56px;
+        }
+        .navbar {
+            background-color: #00796b; /* Teal color for navbar */
+            color: #fff;
+        }
+        .container {
+            background-color: #ffffff; /* White background for content */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .btn-primary {
+            background-color: #00796b; /* Teal buttons */
+            border-color: #00796b;
+        }
+        .btn-primary:hover {
+            background-color: #004d40; /* Darker teal on hover */
+            border-color: #004d40;
+        }
+        .floating-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            background-color: #00796b;
+            color: white;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .floating-button:hover {
+            background-color: #004d40;
+        }
+        .sidebar {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <a class="navbar-brand" href="{% url 'home' %}">Uwazi Uongozini</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="">Who We Are</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="">Our Programmes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'leaderboard' %}">Leaderboard</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'register' %}">Register</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                {% block content %}{% endblock %}
+            </div>
+            <div class="col-md-3">
+                <div class="sidebar">
+                    <h4>Search</h4>
+                    <form method="get" action="{% url 'home' %}">
+                        <input type="text" class="form-control" name="search" placeholder="Search posts...">
+                    </form>
+                </div>
+                <div class="sidebar">
+                    <h4>Trending Posts</h4>
+                    <ul class="list-unstyled">
+                        {% for post in trending_posts %}
+                            <li>
+                                <a href="{% url 'post_detail' post.id %}">{{ post.description|truncatewords:5 }}</a>
+                                <p>{{ post.county }} - {{ post.created_at|date:"Y-m-d" }}</p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="sidebar">
+                    <h4>Other Info</h4>
+                    <p>Relevant information here.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Floating button -->
+    <a href="{% url 'upload_post' %}" class="floating-button">
+        <i class="fas fa-plus"></i>
+    </a>
+    <footer class="footer mt-auto py-3 bg-light">
+        <div class="container">
+            <span class="text-muted">&copy; 2024 Uwazi Uongozini-Kenya. All rights reserved.</span>
+            <div class="float-right">
+                <a href="https://x.com" target="_blank" class="text-muted"><i class="fab fa-x fa-2x"></i></a>
+                <a href="https://www.facebook.com" target="_blank" class="text-muted"><i class="fab fa-facebook fa-2x ml-3"></i></a>
+                <a href="https://www.instagram.com" target="_blank" class="text-muted"><i class="fab fa-instagram fa-2x ml-3"></i></a>
+                <a href="https://www.youtube.com" target="_blank" class="text-muted"><i class="fab fa-youtube fa-2x ml-3"></i></a>
+                <a href="https://www.linkedin.com" target="_blank" class="text-muted"><i class="fab fa-linkedin fa-2x ml-3"></i></a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

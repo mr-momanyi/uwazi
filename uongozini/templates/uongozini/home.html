@@ -1,0 +1,40 @@
+{% extends 'uongozini/base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3">
+        <h3>Kenyan Counties</h3>
+        <ul class="list-group">
+            <li class="list-group-item"><a href="?county=Nairobi">Nairobi</a></li>
+            <li class="list-group-item"><a href="?county=Mombasa">Mombasa</a></li>
+            <li class="list-group-item"><a href="?county=Kisumu">Kisumu</a></li>
+            <li class="list-group-item"><a href="?county=Nakuru">Nakuru</a></li>
+            <!-- Add other counties similarly -->
+        </ul>
+    </div>
+    <div class="col-md-9">
+        {% if county %}
+            <h2>Posts in {{ county }}</h2>
+        {% else %}
+            <h2>All Posts</h2>
+        {% endif %}
+        <div class="card-columns">
+            {% for post in posts %}
+                <div class="card mb-3">
+                    <a href="{% url 'post_detail' post.id %}">
+                        <img src="{{ post.image.url }}" alt="Post Image" class="card-img-top">
+                    </a>
+                    <div class="card-body">
+                         <p>{{ post.description|truncatechars:100 }}</p>
+                        <p class="card-text"><small class="text-muted">County: {{ post.county }}</small></p>
+                        <p class="card-text"><small class="text-muted">Posted by {{ post.user.username }} on {{ post.created_at }}</small></p>
+                        
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

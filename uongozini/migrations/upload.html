@@ -1,0 +1,21 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload post</title>
+</head>
+<body>
+    <h2> Upload post</h2>
+    <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="'image" required>
+    <textarea name="description" placeholder="describe your view" required></textarea>
+    <button type="submit">Upload Image</button>
+    </form>
+</body>
+</html>
