@@ -5,6 +5,11 @@
 {% block content %}
 <div class="row">
     <div class="col-md-3">
+
+        <!-- <div>
+            <button>county reports</button>
+        </div> -->
+
         <h3>Kenyan Counties</h3>
         <ul class="list-group">
             <li class="list-group-item"><a href="?county=Nairobi">Nairobi</a></li>
@@ -18,7 +23,7 @@
         {% if county %}
             <h2>Posts in {{ county }}</h2>
         {% else %}
-            <h2>All Posts</h2>
+            <h2>county stalled development reports</h2>
         {% endif %}
         <div class="card-columns">
             {% for post in posts %}

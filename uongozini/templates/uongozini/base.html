@@ -10,7 +10,7 @@
             padding-top: 56px;
         }
         .navbar {
-            background-color: #00796b; /* Teal color for navbar */
+            background-color: #1dc418; /* Teal color for navbar */
             color: #fff;
         }
         .container {
@@ -20,7 +20,7 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         .btn-primary {
-            background-color: #00796b; /* Teal buttons */
+            background-color: #0ce7ce; /* Teal buttons */
             border-color: #00796b;
         }
         .btn-primary:hover {
@@ -70,9 +70,12 @@
             </ul>
             <ul class="navbar-nav ml-auto">
                 {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-                    </li>
+                <li class="nav-item">
+                    <form method="post" action="{% url 'logout' %}" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-link nav-link" style="padding: 0; border: none; background: none;">Logout</button>
+                    </form>
+                </li>
                 {% else %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'login' %}">Login</a>
@@ -90,12 +93,16 @@
                 {% block content %}{% endblock %}
             </div>
             <div class="col-md-3">
-                <div class="sidebar">
-                    <h4>Search</h4>
-                    <form method="get" action="{% url 'home' %}">
-                        <input type="text" class="form-control" name="search" placeholder="Search posts...">
-                    </form>
-                </div>
+                <form class="form-inline my-2 my-lg-0 search-bar" method="get" action="{% url 'search' %}">
+                     <div class="input-group">
+                        <input class="form-control" type="search" name="q" placeholder="Search" aria-label="Search">
+                         <div class="input-group-append"> 
+                            <button class="btn btn-outline-success" type="submit">
+                                <i class="fas fa-arrow-right"></i> 
+                            </button>
+                        </div> 
+                    </div> 
+                </form>
                 <div class="sidebar">
                     <h4>Trending Posts</h4>
                     <ul class="list-unstyled">
@@ -122,11 +129,11 @@
         <div class="container">
             <span class="text-muted">&copy; 2024 Uwazi Uongozini-Kenya. All rights reserved.</span>
             <div class="float-right">
-                <a href="https://x.com" target="_blank" class="text-muted"><i class="fab fa-x fa-2x"></i></a>
-                <a href="https://www.facebook.com" target="_blank" class="text-muted"><i class="fab fa-facebook fa-2x ml-3"></i></a>
-                <a href="https://www.instagram.com" target="_blank" class="text-muted"><i class="fab fa-instagram fa-2x ml-3"></i></a>
-                <a href="https://www.youtube.com" target="_blank" class="text-muted"><i class="fab fa-youtube fa-2x ml-3"></i></a>
-                <a href="https://www.linkedin.com" target="_blank" class="text-muted"><i class="fab fa-linkedin fa-2x ml-3"></i></a>
+                <a href="https://x.com/AfricaforSDGs" target="_blank" class="text-muted"><i class="fab fa-x fa-2x"></i></a>
+                <a href="https://www.facebook.com/AfricaYouthSDGs" target="_blank" class="text-muted"><i class="fab fa-facebook fa-2x ml-3"></i></a>
+                <a href="https://www.instagram.com/africaforsdgs" target="_blank" class="text-muted"><i class="fab fa-instagram fa-2x ml-3"></i></a>
+                <a href="https://www.youtube.com/@africaforsdgs" target="_blank" class="text-muted"><i class="fab fa-youtube fa-2x ml-3"></i></a>
+                <a href="https://www.tiktok.com/@africaforsdgs" target="_blank" class="text-muted"><i class="fab fa-tiktok fa-2x ml-3"></i></a>
             </div>
         </div>
     </footer>

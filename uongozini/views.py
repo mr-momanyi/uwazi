@@ -3,12 +3,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from django.db.models import Count
+from django.db.models import Count, Q
 from .models import Post, Comment, Like, Profile
+from django.http import HttpResponseForbidden
+
 # from django.contrib.auth import logout
 
-from django.shortcuts import render
-from .models import Post
+
 
 def home(request):
     county = request.GET.get('county')
@@ -71,6 +72,23 @@ def leaderboard(request):
     ).order_by('-post_count', '-like_count', '-comment_count')
     return render(request, 'uongozini/leaderboard.html', {'users': users})
 
+
+
+@login_required
+def delete_post(request, post_id):
+    # Fetch the post
+    post = get_object_or_404(Post, id=post_id)
+    
+    # Check if the current user is the post owner
+    if post.user != request.user:
+        return HttpResponseForbidden("You are not allowed to delete this post.")
+    
+    # Delete the post
+    post.delete()
+    
+    # Redirect to the home page or a success page
+    return redirect('/')
+
 def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -111,3 +129,18 @@ def register(request):
     else:
         form = UserCreationForm()
     return render(request, 'uongozini/register.html', {'form': form})
+
+
+def search(request):
+    query = request.GET.get('q')
+    results = []
+    
+    if query:
+        # Filter posts by matching keywords in description or county
+        results = Post.objects.filter(
+            Q(description__icontains=query) | 
+            Q(county__icontains=query)
+        )
+    
+    return render(request, 'uongozini/search_results.html', {'query': query, 'results': results})
+

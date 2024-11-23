@@ -1,12 +1,12 @@
 {% extends 'uongozini/base.html' %}
 
-{% block title %}Post Detail{% endblock %}
+<!-- {% block title %}Post Detail{% endblock %} -->
 
 {% block sidebar %}{% endblock %}  <!-- This will remove the sidebar -->
 
 {% block content %}
 <div class="container">
-    <h2>Post Detail</h2>
+    <!-- <h2>Post Detail</h2> -->
     <div>
         <img src="{{ post.image.url }}" alt="Post Image" class="img-fluid">
         <p>{{ post.description }}</p>
@@ -21,11 +21,25 @@
             <p><strong>{{ comment.user.username }}:</strong> {{ comment.text }}</p>
         {% endfor %}
     </div>
+
+    
+
     <form method="post" action="{% url 'add_comment' post.id %}">
         {% csrf_token %}
         <textarea name="text" placeholder="Add a comment" required></textarea>
         <button type="submit" class="btn btn-primary">Comment</button>
+
     </form>
+<br>
+    {% if post.user == request.user %}
+    <form method="POST" action="{% url 'delete_post' post.id %}" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Delete Post</button>
+    </form>
+    {% endif %}
     <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>
+
+    
+
 </div>
 {% endblock %}
